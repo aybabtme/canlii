@@ -46,7 +46,7 @@ func (s *search) Search(fulltext string, opts *SearchOptions) (SearchResult, *ht
 			Legislation Legislation `json:"legislation"`
 		} `json:"results"`
 	}
-	resp, err := s.client.Get("search", "", q, &v)
+	resp, err := s.client.get("search", "", q, &v)
 	if err != nil {
 		return res, resp, err
 	}

@@ -21,7 +21,7 @@ func (c *caseBrowse) ListDatabases() ([]CaseDatabase, *http.Response, error) {
 	var v struct {
 		DBs []CaseDatabase `json:"caseDatabases"`
 	}
-	resp, err := c.client.Get("caseBrowse", "", nil, &v)
+	resp, err := c.client.get("caseBrowse", "", nil, &v)
 	return v.DBs, resp, err
 }
 
@@ -69,7 +69,7 @@ func (c *caseBrowse) ListCases(dbID string, opts *ListCaseOptions) ([]Case, *htt
 	var v struct {
 		Cases []Case `json:"cases"`
 	}
-	resp, err := c.client.Get("caseBrowse", dbID, q, &v)
+	resp, err := c.client.get("caseBrowse", dbID, q, &v)
 	return v.Cases, resp, err
 }
 
@@ -90,6 +90,6 @@ func (c *caseBrowse) CaseMetadata(dbID, caseID string) ([]CaseMetadata, *http.Re
 	var v struct {
 		Cases []CaseMetadata `json:"cases"`
 	}
-	resp, err := c.client.Get("caseBrowse", dbID+"/"+caseID, nil, &v)
+	resp, err := c.client.get("caseBrowse", dbID+"/"+caseID, nil, &v)
 	return v.Cases, resp, err
 }

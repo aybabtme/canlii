@@ -1,3 +1,17 @@
+// Package canlii offers a client for the HTTP API of CanLII, a Canadian legal database.
+//
+// About CanLII
+//
+// CanLII stands for Canadian Legal Information Institute. They provide
+// an API to a cases and legislations database.
+//
+// You can register an account at: http://developer.canlii.org/member/register.
+//
+// You can obtain an API at: http://developer.canlii.org/apps/register.
+//
+// API Docs: http://developer.canlii.org/io-docs.
+//
+// http://www.canlii.org/en/index.html
 package canlii
 
 import (
@@ -32,7 +46,7 @@ type Client struct {
 
 	BaseURL *url.URL
 
-	CaseBrowser interface {
+	CaseBrowse interface {
 		ListDatabases() ([]CaseDatabase, *http.Response, error)
 		ListCases(dbID string, opts *ListCaseOptions) ([]Case, *http.Response, error)
 		CaseMetadata(dbID, caseID string) ([]CaseMetadata, *http.Response, error)
@@ -83,7 +97,7 @@ func NewClient(client *http.Client, host, apiKey string) (*Client, error) {
 		BaseURL: u,
 	}
 
-	c.CaseBrowser = &caseBrowse{client: c}
+	c.CaseBrowse = &caseBrowse{client: c}
 	c.CaseCitator = &caseCitator{client: c}
 	c.CaseCitatorTease = &caseCitatorTease{client: c}
 	c.LegislationBrowse = &legislationBrowse{client: c}
@@ -92,7 +106,7 @@ func NewClient(client *http.Client, host, apiKey string) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) Get(res, urlStr string, params url.Values, v interface{}) (*http.Response, error) {
+func (c *Client) get(res, urlStr string, params url.Values, v interface{}) (*http.Response, error) {
 	rel, err := url.Parse(fmt.Sprintf("%s/%s/%s/%s", c.APIVersion, res, c.Language, urlStr))
 	if err != nil {
 		return nil, err
@@ -117,7 +131,7 @@ func (c *Client) Get(res, urlStr string, params url.Values, v interface{}) (*htt
 	}
 	defer resp.Body.Close()
 
-	if err := CheckResponse(urlStr, resp); err != nil {
+	if err := checkResponse(urlStr, resp); err != nil {
 		return nil, err
 	}
 
@@ -125,8 +139,8 @@ func (c *Client) Get(res, urlStr string, params url.Values, v interface{}) (*htt
 	return resp, err
 }
 
-// CheckResponse checks if the HTTP code was not in the 200 range.
-func CheckResponse(path string, r *http.Response) error {
+// checkResponse checks if the HTTP code was not in the 200 range.
+func checkResponse(path string, r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
@@ -152,12 +166,10 @@ type Error struct {
 	Resource string
 	Cause    string
 
-	API []APIError
-}
-
-type APIError struct {
-	ErrType string `json:"error"`
-	Message string `json:"message"`
+	API []struct {
+		ErrType string `json:"error"`
+		Message string `json:"message"`
+	}
 }
 
 func (e *Error) Error() string {

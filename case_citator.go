@@ -17,7 +17,7 @@ func (c *caseCitator) CitingCases(dbID, caseID string) ([]Case, *http.Response, 
 	var v struct {
 		Cases []Case `json:"citingCases"`
 	}
-	resp, err := c.client.Get("caseCitator", u, nil, &v)
+	resp, err := c.client.get("caseCitator", u, nil, &v)
 	return v.Cases, resp, err
 }
 
@@ -29,7 +29,7 @@ func (c *caseCitator) CitedCases(dbID, caseID string) ([]Case, *http.Response, e
 	var v struct {
 		Cases []Case `json:"citedCases"`
 	}
-	resp, err := c.client.Get("caseCitator", u, nil, &v)
+	resp, err := c.client.get("caseCitator", u, nil, &v)
 	return v.Cases, resp, err
 }
 
@@ -41,6 +41,6 @@ func (c *caseCitator) CitedLegislation(dbID, caseID string) ([]Legislation, *htt
 	var v struct {
 		Legislations []Legislation `json:"citedLegislations"`
 	}
-	resp, err := c.client.Get("caseCitator", u, nil, &v)
+	resp, err := c.client.get("caseCitator", u, nil, &v)
 	return v.Legislations, resp, err
 }

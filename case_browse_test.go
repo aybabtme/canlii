@@ -1357,7 +1357,7 @@ func TestCaseBrowseDatabaseList(t *testing.T) {
 	client, close := testClient(t, path, resp, api)
 	defer close()
 
-	gotDBs, _, err := client.CaseBrowser.ListDatabases()
+	gotDBs, _, err := client.CaseBrowse.ListDatabases()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1468,7 +1468,7 @@ func TestCaseBrowseCaseList(t *testing.T) {
 	client, close := testClient(t, path, resp, api)
 	defer close()
 
-	gotCases, _, err := client.CaseBrowser.ListCases("csc-scc", nil)
+	gotCases, _, err := client.CaseBrowse.ListCases("csc-scc", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1505,7 +1505,7 @@ func TestCaseBrowseCaseMetadata(t *testing.T) {
 	client, close := testClient(t, path, resp, api)
 	defer close()
 
-	gotCases, _, err := client.CaseBrowser.CaseMetadata("abwcac", "2013canlii10946")
+	gotCases, _, err := client.CaseBrowse.CaseMetadata("abwcac", "2013canlii10946")
 	if err != nil {
 		t.Fatal(err)
 	}

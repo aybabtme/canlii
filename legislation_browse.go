@@ -21,7 +21,7 @@ func (c *legislationBrowse) ListDatabases() ([]LegislationBrowseDatabase, *http.
 	var v struct {
 		DBs []LegislationBrowseDatabase `json:"legislationDatabases"`
 	}
-	resp, err := c.client.Get("legislationBrowse", "", nil, &v)
+	resp, err := c.client.get("legislationBrowse", "", nil, &v)
 	return v.DBs, resp, err
 }
 
@@ -39,7 +39,7 @@ func (c *legislationBrowse) ListLegislations(dbID string) ([]Legislation, *http.
 	var v struct {
 		Legislations []Legislation `json:"legislations"`
 	}
-	resp, err := c.client.Get("legislationBrowse", dbID, nil, &v)
+	resp, err := c.client.get("legislationBrowse", dbID, nil, &v)
 	return v.Legislations, resp, err
 }
 
@@ -65,6 +65,6 @@ type LegislationMetadata struct {
 // legislationID is a unique identifier of a legislation as provided in the legislation list.
 func (c *legislationBrowse) LegislationMetadata(dbID, legislationID string) (Legislation, *http.Response, error) {
 	legis := Legislation{}
-	resp, err := c.client.Get("legislationBrowse", dbID+"/"+legislationID, nil, &legis)
+	resp, err := c.client.get("legislationBrowse", dbID+"/"+legislationID, nil, &legis)
 	return legis, resp, err
 }
