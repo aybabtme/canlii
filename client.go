@@ -19,11 +19,13 @@ const (
 	defaultLanguage = "en"
 )
 
+// Client to the CanLII API.
 type Client struct {
 	client *http.Client
 
 	apiKey string
 
+	// CanliiHost
 	CanliiHost string
 	APIVersion string
 	Language   string
@@ -31,18 +33,18 @@ type Client struct {
 	BaseURL *url.URL
 
 	CaseBrowser interface {
-		ListDatabases() ([]CaseBrowserDatabase, *http.Response, error)
-		ListCases(dbID string, opts *ListCaseOptions) ([]CaseListItem, *http.Response, error)
-		CaseMetadata(dbID, caseID string) ([]Case, *http.Response, error)
+		ListDatabases() ([]CaseDatabase, *http.Response, error)
+		ListCases(dbID string, opts *ListCaseOptions) ([]Case, *http.Response, error)
+		CaseMetadata(dbID, caseID string) ([]CaseMetadata, *http.Response, error)
 	}
 	CaseCitator interface {
-		CitingCases(dbID, caseID string) ([]CaseListItem, *http.Response, error)
-		CitedCases(dbID, caseID string) ([]CaseListItem, *http.Response, error)
+		CitingCases(dbID, caseID string) ([]Case, *http.Response, error)
+		CitedCases(dbID, caseID string) ([]Case, *http.Response, error)
 		CitedLegislation(dbID, caseID string) ([]Legislation, *http.Response, error)
 	}
 	CaseCitatorTease interface {
-		CitingCases(dbID, caseID string) ([]CaseListItem, *http.Response, error)
-		CitedCases(dbID, caseID string) ([]CaseListItem, *http.Response, error)
+		CitingCases(dbID, caseID string) ([]Case, *http.Response, error)
+		CitedCases(dbID, caseID string) ([]Case, *http.Response, error)
 		CitedLegislation(dbID, caseID string) ([]Legislation, *http.Response, error)
 	}
 	LegislationBrowse interface {
@@ -55,6 +57,8 @@ type Client struct {
 	}
 }
 
+// NewClient to the API. `host` is optional and if empty, the default URL for
+// the API is used. `apiKey` is mandatory and can be obtained at http://developer.canlii.org.
 func NewClient(client *http.Client, host, apiKey string) (*Client, error) {
 	if host == "" {
 		host = defaultApiHost
@@ -79,7 +83,7 @@ func NewClient(client *http.Client, host, apiKey string) (*Client, error) {
 		BaseURL: u,
 	}
 
-	c.CaseBrowser = &caseBrowser{client: c}
+	c.CaseBrowser = &caseBrowse{client: c}
 	c.CaseCitator = &caseCitator{client: c}
 	c.CaseCitatorTease = &caseCitatorTease{client: c}
 	c.LegislationBrowse = &legislationBrowse{client: c}

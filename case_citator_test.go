@@ -222,7 +222,7 @@ func TestCaseCitatorCitingCases(t *testing.T) {
   ]
 }`
 	var v struct {
-		DBs []canlii.CaseListItem `json:"citingCases"`
+		DBs []canlii.Case `json:"citingCases"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
 	if err != nil {
@@ -405,7 +405,7 @@ func TestCaseCitatorCitedCases(t *testing.T) {
   ]
 }`
 	var v struct {
-		Cases []canlii.CaseListItem `json:"citedCases"`
+		Cases []canlii.Case `json:"citedCases"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
 	if err != nil {

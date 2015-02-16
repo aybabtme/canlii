@@ -16,6 +16,7 @@ type LegislationBrowseDatabase struct {
 	Name         string `json:"name"`
 }
 
+// ListDatabases lists all the databases supported by the API
 func (c *legislationBrowse) ListDatabases() ([]LegislationBrowseDatabase, *http.Response, error) {
 	var v struct {
 		DBs []LegislationBrowseDatabase `json:"legislationDatabases"`
@@ -32,6 +33,8 @@ type Legislation struct {
 	Type          string `json:"type"`
 }
 
+// ListLegislations lists all the legislation within a database.
+// dbID is a unique identifier of a database as provided in the database list.
 func (c *legislationBrowse) ListLegislations(dbID string) ([]Legislation, *http.Response, error) {
 	var v struct {
 		Legislations []Legislation `json:"legislations"`
@@ -57,6 +60,9 @@ type LegislationMetadata struct {
 	} `json:"content"`
 }
 
+// LegislationMetadata gets the metadata for a given legislation.
+// dbID is a unique identifier of a database as provided in the database list.
+// legislationID is a unique identifier of a legislation as provided in the legislation list.
 func (c *legislationBrowse) LegislationMetadata(dbID, legislationID string) (Legislation, *http.Response, error) {
 	legis := Legislation{}
 	resp, err := c.client.Get("legislationBrowse", dbID+"/"+legislationID, nil, &legis)

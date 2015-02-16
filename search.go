@@ -10,16 +10,17 @@ type search struct {
 }
 
 type SearchOptions struct {
-	Offset      int
-	ResultCount int
+	Offset      int // Starting record number for the list. First value is 0.
+	ResultCount int // Number of cases listed in each response. Maximum value is 100.
 }
 
 type SearchResult struct {
 	TotalResults int
-	Cases        []CaseListItem
+	Cases        []Case
 	Legislations []Legislation
 }
 
+// Search for cases and legislations matching a search query.
 func (s *search) Search(fulltext string, opts *SearchOptions) (SearchResult, *http.Response, error) {
 	const maxResultCount = 100
 	if opts == nil {
@@ -41,8 +42,8 @@ func (s *search) Search(fulltext string, opts *SearchOptions) (SearchResult, *ht
 	var v struct {
 		ResultCount int `json:"resultCount"`
 		Results     []struct {
-			Case        CaseListItem `json:"case"`
-			Legislation Legislation  `json:"legislation"`
+			Case        Case        `json:"case"`
+			Legislation Legislation `json:"legislation"`
 		} `json:"results"`
 	}
 	resp, err := s.client.Get("search", "", q, &v)

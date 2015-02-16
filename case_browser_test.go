@@ -1344,7 +1344,7 @@ func TestCaseBrowseDatabaseList(t *testing.T) {
   ]
 }`
 	var v struct {
-		DBs []canlii.CaseBrowserDatabase `json:"caseDatabases"`
+		DBs []canlii.CaseDatabase `json:"caseDatabases"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
 	if err != nil {
@@ -1455,7 +1455,7 @@ func TestCaseBrowseCaseList(t *testing.T) {
   ]
 }`
 	var v struct {
-		Cases []canlii.CaseListItem `json:"cases"`
+		Cases []canlii.Case `json:"cases"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
 	if err != nil {
@@ -1492,7 +1492,7 @@ func TestCaseBrowseCaseMetadata(t *testing.T) {
   "decisionDate": "2013-03-07"
 }`
 	var v struct {
-		Cases []canlii.Case `json:"cases"`
+		Cases []canlii.CaseMetadata `json:"cases"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
 	if err != nil {

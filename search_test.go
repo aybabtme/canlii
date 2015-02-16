@@ -110,8 +110,8 @@ func TestSearchLegislation(t *testing.T) {
 	var v struct {
 		ResultCount int `json:"resultCount"`
 		Results     []struct {
-			Case        canlii.CaseListItem `json:"case"`
-			Legislation canlii.Legislation  `json:"legislation"`
+			Case        canlii.Case        `json:"case"`
+			Legislation canlii.Legislation `json:"legislation"`
 		} `json:"results"`
 	}
 	err := json.NewDecoder(strings.NewReader(resp)).Decode(&v)
